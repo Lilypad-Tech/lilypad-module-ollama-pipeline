@@ -1,8 +1,6 @@
 # Ollama Pipeline for Lilypad and Docker 🐋
 Based on Ollama, the Ollama Pipeline modules for Lilypad allow you generate text on Lilypad using various models.
 
-[WORK IN PROGRESS, HERE BE DRAGONS]
-
 # Usage
 These modules are designed to be run in a Docker container, either through the Lilypad Network or in Docker directly.
 
@@ -11,7 +9,7 @@ The following tunables are available. All of them are optional, and have default
 
 | Name | Description | Default | Available options |
 |------|-------------|---------|-------------------|
-| `Prompt` | A text prompt for the model | "question mark floating in space" | Any string |
+| `Prompt` | A text prompt for the model | "Hello AI world" | Any string |
 
 See the usage sections for the runner of your choice for more information on how to set and use these variables.
 
@@ -20,7 +18,7 @@ To run Ollama Pipeline in Lilypad, you can use the following commands:
 
 ### LLaMa3
 ```bash
-lilypad run ollama-pipeline:llama3-8b-lilypad1 -i Prompt='Something awesome this way comes'
+lilypad run ollama-pipeline:llama3-8b-lilypad1 -i Prompt='Hello AI World'
 ```
 
 ### Specifying tunables
@@ -28,7 +26,7 @@ lilypad run ollama-pipeline:llama3-8b-lilypad1 -i Prompt='Something awesome this
 If you wish to specify more than one tunable, such as the number of steps, simply add more `-i` flags, like so:
 
 ```bash
-lilypad run sdxl-pipeline -i Prompt="an astronaut floating against a white background" -i Steps=69
+lilypad run ollama-pipeline -i Prompt="an astronaut floating against a white background" -i Steps=69
 ```
 
 See the options and tunables section for more information on what tunables are available.
@@ -42,15 +40,15 @@ To run these modules in Docker, you can use the following commands:
 ```bash
 docker run -ti --gpus all \
     -v $PWD/outputs:/outputs \
-    -e PROMPT="an astronaut floating against a white background" \
-    zorlin/ollama:llama3-8b-lilypad1
+    -e PROMPT="Hello AI World" \
+    ollama:llama3-8b-lilypad4
 ```
 
 ### Specifying tunables
 If you wish to specify more than one tunable, such as the number of steps, simply add more `-e` flags, like so:
 
 ```bash
--e PROMPT="an astronaut floating against a white background" \
+-e PROMPT="Hello AI World" \
 -e STEPS=69 \
 -e SIZE=2048 \
 ```
@@ -64,7 +62,7 @@ You can build the Docker containers that form this module by following these ste
 # From the root directory of this repository, change to the docker folder.
 cd docker
 # Build the docker image
-DOCKER_BUILDKIT=1 docker build -f Dockerfile-llama3-8b -t zorlin/ollama:llama3-8b-lilypad1 --target runner .
+DOCKER_BUILDKIT=1 docker build -f Dockerfile-llama3-8b -t ollama:llama3-8b-lilypad4 --target runner .
 ```
 ```
 mkdir -p outputs
@@ -80,13 +78,7 @@ Once you've made your changes, publish your Docker image, then edit `lilypad_mod
 
 You can then run your module with 
 
-`lilypad run github.com/zorlin/example:v0.1.2 -i Prompt="A very awesome dragon riding a unicorn"` to test your changes, replacing `zorlin` with your username and `v0.1.2` with the tag you created.
+`lilypad run github.com/git_username/example:v0.1.2 -i Prompt="Hello AI World"` to test your changes, replacing `git_username` with your username and `v0.1.2` with the tag you created.
 
 Note that most nodes on the public Lilypad network will be unlikely to run your module (due to allowlisting), so you may need to run a Lilypad node to test your changes. Once your module is stable and tested, you can request that it be adopted as an official module. Alternatively, if you're simply making changes to this module instead of making a new one, feel free to submit a pull request.
 
-# Credits
-Authored by the Lilypad team. Maintained by [Zorlin](https://github.com/Zorlin).
-
-Based on [sdxl-pipeline](https://github.com/lilypad-tech/lilypad-module-sdxl-pipeline), which was written by early Lilypad contributors.
-
-Based on Ollama.
